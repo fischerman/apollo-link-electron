@@ -16,16 +16,18 @@ export namespace ElectronLink {
      * Defaults to false.
      */
     includeExtensions?: boolean
+    
+    timeout?: int
   }
 }
 
 type MainProcessError = Error & { response: Record<string, any> }
 
 export const createElectronLink = (linkOptions: ElectronLink.Options = {}) => {
-  let { channel = "electron-graphql", includeExtensions } = linkOptions
+  let { channel = "electron-graphql", includeExtensions, timeout = 5000 } = linkOptions
 
   // init fetcher
-  let fetcher = createGraphQLFetcher({ channel })
+  let fetcher = createGraphQLFetcher({ channel, timeout })
   fetcher.init()
 
   return new ApolloLink(
